@@ -31,10 +31,12 @@ int main()
     for (auto& x : nums) // access by reference to avoid copying
     {
         for (auto& y : nums) {
-            if (x + y == 2020) {
-            std:cout << "Found the answer! \n" << x << " + " << y << " = 2020\n";
-                std::cout << x * y;
-                return 0;
+            for (auto& z : nums) {
+                if (x + y + z == 2020) {
+                std:cout << "Found the answer! \n" << x << " + " << y << " = 2020\n";
+                    std::cout << x * y * z;
+                    return 0;
+                }
             }
         }
     }

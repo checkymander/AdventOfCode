@@ -66,8 +66,19 @@ bool checkIfValid(std::string pass,char checkCharacter, int high, int low) {
     else {
         return false;
     }
-
 }
+
+bool checkIfValid2(std::string pass, char checkCharacter, int allowed, int notAllowed) {
+    if (pass[allowed - 1] == checkCharacter && pass[notAllowed - 1] != checkCharacter) {
+        return true;
+    }
+    else if (pass[allowed - 1] != checkCharacter && pass[notAllowed - 1] == checkCharacter) {
+        return true;
+    }
+    else return false;
+}
+
+
 inline std::string BoolToString(bool b)
 {
     return b ? "true" : "false";
@@ -92,7 +103,7 @@ int main()
 
         //std::cout << "Checking Password: " << strSplit[2] << " - " << BoolToString(checkIfValid(strSplit[2], checkCharacter, high, low)) << "\n";
 
-        if (checkIfValid(strSplit[2], checkCharacter, high, low)) {
+        if (checkIfValid2(strSplit[2], checkCharacter, high, low)) {
             valid++;
         }
         else {
