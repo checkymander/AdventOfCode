@@ -19,27 +19,52 @@ std::vector<string> readFile(std::string filename) {
 }
 
 bool checkIfTree(std::string line, int horizontal) {
-    std::cout << horizontal << "\n";
     return (line[horizontal] == '#');
 }
 
+void part2(int horizontal, int vertical) {
+    //int verticalLocation = vertical;
+    int horizontalLocation = 0;
+    int treesHit = 0;
+    vector<string> map = readFile("map.txt");
+    for (int i = 0; i < map.size(); i += vertical) {        
+        if (checkIfTree(map[i], horizontalLocation)) {
+            treesHit += 1;
+        }
+        horizontalLocation = horizontalLocation + horizontal;
+        int maxLineLen = map[i].size();
+        if (horizontalLocation > maxLineLen - 1) {
+            horizontalLocation = horizontalLocation % maxLineLen;
+        }
+    }
+    std::cout << "Result: " << treesHit << "\n";
+}
 
-int main()
-{
+void part1() {
     int verticalLocation = 0;
     int horizontalLocation = 0;
     int treesHit = 0;
     vector<string> map = readFile("map.txt");
-    std::cout << "Map Size: " << map.size() << "\n";
-    //193
+    //193 Part 1
     for (auto x : map) {
         if (checkIfTree(x, horizontalLocation)) {
             treesHit += 1;
         }
         horizontalLocation = horizontalLocation + 3;
-        if (horizontalLocation > x.size()-1) {
+
+        if (horizontalLocation > x.size() - 1) {
             horizontalLocation = horizontalLocation % x.size();
         }
     }
-        std::cout << "Result: " << treesHit;
+    std::cout << "Result: " << treesHit << "\n";
+}
+int main()
+{
+    //part1();
+    part2(1,1);
+    part2(3,1);
+    part2(5,1);
+    part2(7,1);
+    part2(1,2);
+
 }
