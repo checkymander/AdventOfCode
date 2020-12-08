@@ -7,20 +7,57 @@
 #include <vector>
 #include <sstream>
 #include <iterator>
+#include <algorithm>
+#include <cctype>
+#include <regex>
 
 using namespace std;
 
-class Passport {
-public:
-    string byr;
-    string iyr;  
-    string eyr;
-    string hgt;
-    string hcl;
-    string ecl;
-    string pid;
-    string cid;
-};
+
+bool isValidBirthYear(int year) {
+    return (year >= 1920 && year <= 2002);
+}
+
+bool isValidIssueYear(int year){
+    return (year >= 2010 && year <= 2020);
+}
+bool isValidExpirationYear(int year) {
+    return (year >= 2020 && year <= 2030);
+}
+bool isValidHeight(std::string height) {
+    try {
+        int val;
+        string heightString;
+        if (height.substr(height.length() - 2) == "cm") {
+            //3 characters for height
+            heightString = height.substr(0, 3);
+            val = atoi(heightString.c_str());
+            return (val >= 150 && val <= 193);
+        }
+        else if (height.substr(height.length() - 2) == "in") {
+            //2 characters for inches
+            heightString = height.substr(0,2);
+            val = atoi(heightString.c_str());
+            return (val >= 59 && val <= 76);
+        }
+        else {
+            return false;
+        }
+    }
+    catch(int e)
+    {
+        return false;
+    }
+}
+bool isValidHairColor(std::string color) {
+    return regex_match(color, regex("^(#)([a-f0-9]){6}"));
+}
+bool isValidEyeColor(std::string color) {
+    return regex_match(color, regex("(amb|blu|brn|gry|grn|hzl|oth)"));
+}
+bool isValidPassportId(std::string ID) {
+    return regex_match(ID, regex("^\\d{9}$"));
+}
 
 std::vector<string> readFile(std::string filename) {
     std::ifstream file(filename);
@@ -48,10 +85,16 @@ std:vector<string> result;
     }
     return result[0];
 }
+string getValue(std::string &s, char delim) {
+    std::string token = s.substr(s.find(delim) + 1, s.length());
+    return token;
+}
 
 int main()
 {
     vector<string> passports = readFile("passports.txt");
+    int validPassports = 0;
+    int newlines = 0;
     bool byr = false;
     bool iyr = false;
     bool eyr = false;
@@ -60,41 +103,49 @@ int main()
     bool ecl = false;
     bool cid = false;
     bool pid = false;
-    int validPassports = 0;
-    int newlines = 0;
+
     for (auto& line : passports) {
         if (line != "") {
             std::istringstream iss(line);
             vector<string> props = splitStringIntoVector(iss, ' ');
-
             for (auto& prop : props) {
                 std::istringstream iss2(prop);
                 string value = getKey(iss2, ':');
-                std::cout << value << "\n";
                 if (value == "byr") {
-                    byr = true;
+                    byr = isValidBirthYear(atoi(getValue(prop,':').c_str()));
+                    //std::cout << byr << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "iyr") {
-                    iyr = true;
+                    iyr = isValidIssueYear(atoi(getValue(prop, ':').c_str()));
+                    //std::cout << iyr << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "eyr") {
-                    eyr = true;
+                    eyr =  isValidExpirationYear(atoi(getValue(prop, ':').c_str()));
+                    //std::cout << eyr << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "hgt") {
-                    hgt = true;
+                    hgt = isValidHeight(getValue(prop,':'));
+                    //std::cout << hgt << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "hcl") {
-                    hcl = true;
+                    hcl = isValidHairColor(getValue(prop, ':'));
+                    //std::cout << hcl << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "ecl") {
-                    ecl = true;
+                    ecl = isValidEyeColor(getValue(prop, ':'));
+                    //std::cout << ecl << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "pid") {
-                    pid = true;
+                    pid = isValidPassportId(getValue(prop, ':'));
+                    std::cout << pid << " " << getValue(prop, ':') << "\n";
                 }
             }
         }
         else {
+            if (byr && iyr && eyr && hgt && hcl && ecl && pid) {
+                validPassports++;
+            }
+
             byr = false;
             iyr = false;
             eyr = false;
@@ -103,25 +154,10 @@ int main()
             ecl = false;
             pid = false;
         }
-        if (byr && eyr && hgt && hcl && ecl && pid) {
-            validPassports+=1;
-        }
-        else {
-            newlines++;
-        }
-    }    
-    cout << validPassports;
-    cout << "\n" << newlines;
+    }   
+    if (byr && iyr && eyr && hgt && hcl && ecl && pid) {
+        validPassports++;
+    }
+    std::cout << "Valid Passports: " << validPassports;
 
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
