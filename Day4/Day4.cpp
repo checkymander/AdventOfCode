@@ -113,31 +113,24 @@ int main()
                 string value = getKey(iss2, ':');
                 if (value == "byr") {
                     byr = isValidBirthYear(atoi(getValue(prop,':').c_str()));
-                    //std::cout << byr << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "iyr") {
                     iyr = isValidIssueYear(atoi(getValue(prop, ':').c_str()));
-                    //std::cout << iyr << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "eyr") {
                     eyr =  isValidExpirationYear(atoi(getValue(prop, ':').c_str()));
-                    //std::cout << eyr << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "hgt") {
                     hgt = isValidHeight(getValue(prop,':'));
-                    //std::cout << hgt << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "hcl") {
                     hcl = isValidHairColor(getValue(prop, ':'));
-                    //std::cout << hcl << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "ecl") {
                     ecl = isValidEyeColor(getValue(prop, ':'));
-                    //std::cout << ecl << " " << getValue(prop, ':') << "\n";
                 }
                 else if (value == "pid") {
                     pid = isValidPassportId(getValue(prop, ':'));
-                    std::cout << pid << " " << getValue(prop, ':') << "\n";
                 }
             }
         }
