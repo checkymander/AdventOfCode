@@ -18,11 +18,9 @@ std::vector<string> readFile(std::string filename) {
     return lines;
 }
 
-bool checkValue(int vertical, int horizontal, std::vector<string> map) {
-    if (map[vertical][horizontal] == '#') {
-        //std::cout << "(" << vertical << "," << horizontal << ")" << " - " << map[vertical][horizontal] << "\n";
-        return true;
-    }
+bool checkIfTree(std::string line, int horizontal) {
+    std::cout << horizontal << "\n";
+    return (line[horizontal] == '#');
 }
 
 
@@ -32,34 +30,16 @@ int main()
     int horizontalLocation = 0;
     int treesHit = 0;
     vector<string> map = readFile("map.txt");
-    while (verticalLocation != map.size()) {
-        std::cout << "(" << verticalLocation << "," << map.size() << ")\n";
-        if (checkValue(verticalLocation, horizontalLocation, map)) {
-            treesHit++;
+    std::cout << "Map Size: " << map.size() << "\n";
+    //193
+    for (auto x : map) {
+        if (checkIfTree(x, horizontalLocation)) {
+            treesHit += 1;
         }
-         verticalLocation++;
-         horizontalLocation += 3;
-
-        if (horizontalLocation > 30) {
-            horizontalLocation = horizontalLocation % 30;
+        horizontalLocation = horizontalLocation + 3;
+        if (horizontalLocation > x.size()-1) {
+            horizontalLocation = horizontalLocation % x.size();
         }
     }
-    
-        std::cout << treesHit;
-    //Step 1: Keep track of what line in the text file you are.
-        //Step 1a: Maybe store the entire thing in a vector, wich each line being it's own item.
-    //Step 2: Keep track of horizontal position (Position 0 to Position 30)
-    //Step 3: If current position is greater than 30, loop back to 0 and continue from there
-    //Step 4: Calculate what line you're on vs what horizontal position you have to determine whether that item is a "." or a "#"
+        std::cout << "Result: " << treesHit;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
