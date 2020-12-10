@@ -27,9 +27,7 @@ bool part2() {
     int start = 0;
     long sum_of_elems = 0;
     int curNum = 1124361034;
-    while (start < nums.size() - 1) {
-        int end = 0;
-
+    for (int start = 0; start < nums.size() - 1; start++){
         for(int end = 0; end < nums.size() - 1; end ++)
         {
             for (int i = start; i < end +1; i++) {
@@ -42,8 +40,6 @@ bool part2() {
             sum_of_elems = 0;
         }
         sum_of_elems = 0;
-
-        start++;
     }
     return false;
 }
