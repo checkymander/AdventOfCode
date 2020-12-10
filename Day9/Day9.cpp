@@ -29,7 +29,9 @@ bool part2() {
     int curNum = 1124361034;
     while (start < nums.size() - 1) {
         int end = 0;
-        while (end < nums.size() - 1) {
+
+        for(int end = 0; end < nums.size() - 1; end ++)
+        {
             for (int i = start; i < end +1; i++) {
                 sum_of_elems += nums[i];
             }
@@ -38,7 +40,6 @@ bool part2() {
                 return true;
             }
             sum_of_elems = 0;
-            end++;
         }
         sum_of_elems = 0;
 
@@ -59,37 +60,28 @@ int main()
         bool match = false;
 
         curNum = nums[i];
-        int f = i - 26;
-        int g = i - 26;
-        while (f != i) {
+        for (int f = i - 26; f != i; f++) {
             if (match) {
                 break;
             }
-            while (g != i) {
+           for(int g = i-26; g != i; g++) {
                 if (match) {
                     break;
                 }
                 if (nums[g] + nums[f] == curNum) {
                     match = true;
                 }
-                g++;
             }
-            g = i - 26;
-            f++;
         }
         if (!match) {
             std::cout << curNum << "\n";
             break;
         }
         i++;
-        f = i - 26;
     }
     int r = 0;
     std::cout << "Starting Part2\n";
     part2();
-
-    std::cout << (43434797 + 77232463);
-
 
 
     //1124361034

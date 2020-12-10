@@ -26,15 +26,20 @@ int main()
 {
     std::vector<int> nums = readFile("Day10.txt");
     int oneJolt = 0;
-    int threeJoly = 0;
+    int threeJolt = 0;
     int prevNum = 0;
     std::sort(nums.begin(), nums.end());
     for (auto x : nums) {
         std::cout << (x - prevNum) << "\n";
-
-
+        if (x - prevNum == 3) {
+            threeJolt++;
+        }
+        else if (x - prevNum == 1) {
+            oneJolt++;
+        }
         prevNum = x;
     }
+    std::cout << oneJolt << " " << threeJolt + 1 << " " << oneJolt * (threeJolt+1) << "\n";
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
